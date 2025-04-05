@@ -2,37 +2,36 @@ package main
 
 import (
 	// "fmt"
+
 	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+
+	"github.com/Sokorinjo/goapi/internal/post"
+	"github.com/Sokorinjo/goapi/internal/user"
 )
 
 func main() {
-	router := chi.NewRouter()
+	r := chi.NewRouter()
 
-	router.Use(middleware.Logger)
+	r.Use(middleware.Logger)
 
-	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Penis"))
-	})
-
-	router.Get("/home", func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Home Page"))
 	})
 
-	router.Get("/users/{userId}-{userName}", getUser)
+	r.Mount("/users", user.UserRoutes())
+	r.Mount("/posts", post.PostRoutes())
 
-	err := http.ListenAndServe(":3000", router)
+	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(404)
+		w.Write([]byte("Route does not exist."))
+	})
+
+	err := http.ListenAndServe(":3000", r)
 	if err != nil {
-		fmt.Printf("Error occured: %v", err)
+		fmt.Println(err)
 	}
-}
-
-func getUser(w http.ResponseWriter, r *http.Request) {
-	userId := chi.URLParam(r, "userId")
-	userName := chi.URLParam(r, "userName")
-
-	w.Write([]byte("User: " + userId + " " + userName))
 }
