@@ -24,7 +24,7 @@ CREATE TABLE posts(
 INSERT INTO posts
   (user_id, content)
 VALUES 
-  ('1', 'jak gas'),
+  ('1', 'jak gas.'),
   ('1', 'Najjaci sam.'),
-  ('2', 'imam najlepseg decka'),
-  ('3', 'ja sam pedercina <3');
+  ('2', 'imam najlepseg decka.'),
+  ('3', 'ja sam pedercina <3.');
