@@ -1,19 +1,23 @@
 package main
 
 import (
-	// "fmt"
-
 	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 
+	"github.com/Sokorinjo/goapi/internal/db"
 	"github.com/Sokorinjo/goapi/internal/post"
 	"github.com/Sokorinjo/goapi/internal/user"
 )
 
 func main() {
+
+	//Connect to DB
+	db.ConnectDB()
+
+	//Make Router and routes
 	r := chi.NewRouter()
 
 	r.Use(middleware.Logger)
@@ -30,6 +34,7 @@ func main() {
 		w.Write([]byte("Route does not exist."))
 	})
 
+	//Listen
 	err := http.ListenAndServe(":3000", r)
 	if err != nil {
 		fmt.Println(err)
