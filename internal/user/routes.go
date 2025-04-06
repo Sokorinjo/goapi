@@ -7,7 +7,7 @@ import (
 func UserRoutes() chi.Router {
 	r := chi.NewRouter()
 
-	r.Get("/", usersPage)
+	r.Get("/", getAllUsers)
 	r.Post("/", createUser)
 	r.Get("/{userId}", getUser)
 
