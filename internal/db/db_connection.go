@@ -11,7 +11,7 @@ import (
 	// "github.com/joho/godotenv"
 )
 
-var db *sql.DB
+var DB *sql.DB
 
 func ConnectDB() {
 	//Simple way of defining DSN:
@@ -29,15 +29,21 @@ func ConnectDB() {
 	dsn := cfg.FormatDSN()
 	//Get a database handle
 	var err error
-	db, err = sql.Open("mysql", dsn)
+	DB, err = sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	pingErr := db.Ping()
+	pingErr := DB.Ping()
 	if pingErr != nil {
 		log.Fatal(pingErr)
 	}
 	fmt.Println("Connected to database: " + os.Getenv("DB_NAME"))
+}
 
+func CloseDB() {
+	err := DB.Close()
+	if err != nil {
+		log.Fatalf("Error closing database connection: %v", err)
+	}
 }
