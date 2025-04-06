@@ -6,9 +6,9 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-// Users Page
-func usersPage(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Users Page"))
+// Get all users
+func getAllUsers(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Get all users."))
 }
 
 // Get specific user
