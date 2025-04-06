@@ -22,6 +22,7 @@ func main() {
 	}
 
 	db.ConnectDB()
+	defer db.CloseDB()
 
 	r := chi.NewRouter()
 
