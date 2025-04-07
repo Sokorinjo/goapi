@@ -55,20 +55,37 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(user)
 }
 
-//Delete user
+// Delete user
 func deleteUser(w http.ResponseWriter, r *http.Request) {
 	userId := chi.URLParam(r, "userId")
 
-	_, err := db.DB.Exec("DELETE FROM users WHERE user_id=?", userId); 
+	_, err := db.DB.Exec("DELETE FROM users WHERE user_id=?", userId)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
 	w.WriteHeader(http.StatusNoContent)
-	w.Write([]byte("User "+userId+" deleted."))
+	w.Write([]byte("User " + userId + " deleted."))
 }
 
-//Update user credentials
+// Update user credentials
+func updateUser(w http.ResponseWriter, r *http.Request) {
+	userId := chi.URLParam(r, "userId")
+	var user User
+
+	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	_, err := db.DB.Exec("UPDATE users SET user_name=?, user_pass=? WHERE user_id=?", user.Name, user.Pass, userId)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Unable to update user: %s", err.Error()), http.StatusBadRequest)
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("User updated"))
+}
 
 // Get all users
 func getAllUsers(w http.ResponseWriter, r *http.Request) {
