@@ -11,6 +11,7 @@ func UserRoutes() chi.Router {
 	r.Post("/", createUser)
 	r.Route("/{userId}", func(r chi.Router) {
 		r.Get("/", getUser)
+		r.Patch("/", updateUser)
 		r.Delete("/", deleteUser)
 	})
 
