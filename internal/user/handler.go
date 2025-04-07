@@ -55,9 +55,20 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(user)
 }
 
+//Delete user
 func deleteUser(w http.ResponseWriter, r *http.Request) {
-	
+	userId := chi.URLParam(r, "userId")
+
+	_, err := db.DB.Exec("DELETE FROM users WHERE user_id=?", userId); 
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+	w.Write([]byte("User "+userId+" deleted."))
 }
+
+//Update user credentials
 
 // Get all users
 func getAllUsers(w http.ResponseWriter, r *http.Request) {
