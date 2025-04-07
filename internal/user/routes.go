@@ -9,7 +9,10 @@ func UserRoutes() chi.Router {
 
 	r.Get("/", getAllUsers)
 	r.Post("/", createUser)
-	r.Get("/{userId}", getUser)
+	r.Route("/{userId}", func(r chi.Router) {
+		r.Get("/", getUser)
+		r.Delete("/", deleteUser)
+	})
 
 	return r
 }
